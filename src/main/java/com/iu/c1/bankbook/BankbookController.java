@@ -50,8 +50,51 @@ public class BankbookController {
 				e.printStackTrace();
 			}
 			
+	/** ------------------------insert                   */
+			
 		}else if(path.equals("bankbookInsert.do")) {
 			System.out.println("상품 등록 확인");
+			
+			String method = request.getMethod();
+			System.out.println("Method : "+method);
+			
+			if(method.equals("POST")) {
+				//파라미터값 출력
+				String bookName= request.getParameter("bookName");
+				String bookRate = request.getParameter("bookRate");
+				String bookSale = request.getParameter("bookSale");
+				BankBookDTO bankBookDTO = new BankBookDTO();
+				bankBookDTO.setBookName(bookName);
+				bankBookDTO.setBookRate(Double.parseDouble(bookRate));
+				bankBookDTO.setBookSale(Integer.parseInt(bookSale));
+				
+				int result = bankBookDAO.setInsert(bankBookDTO);
+				
+				System.out.println(result);
+				
+//				ArrayList<BankBookDTO> ar = bankBookDAO.getList();
+//				request.setAttribute("list", ar);
+//				
+				try {
+					response.sendRedirect("./bankbookList.do");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				
+				RequestDispatcher view = request.getRequestDispatcher("../WEB-INF/views/bankbook/bankbookInsert.jsp");
+				try {
+					view.forward(request, response);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+			}
+			
+			
+			
+	/** ----------------------- Select                 */		
 		}else if(path.equals("bankbookSelect.do")) {
 			System.out.println("상품상세 조회");
 			String num = request.getParameter("bookNumber");
